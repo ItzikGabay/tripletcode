@@ -48,7 +48,7 @@
         </td> 
         <td>{{snippet.views}}</td> 
         <th>
-          <button class="btn btn-ghost btn-xs">View</button>
+          <nuxt-link :to="`/${snippet._id}`"><button class="btn btn-ghost btn-xs">View</button></nuxt-link>
         </th>
       </tr>
     </tbody> 
