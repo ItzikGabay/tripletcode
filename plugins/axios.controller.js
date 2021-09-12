@@ -1,16 +1,20 @@
 // Provide nuxt-axios instance to use same configuration across the whole project
 // I've used typical CRUD method names and actions here
 export default $axios => resource => ({
+    pathUr: 'http://localhost:4001/',
+
     index() {
         return $axios.$get(`${resource}`)
     },
 
     show(id) {
-        return $axios.$get(`${resource}/${id}`)
+        return $axios.$get(`${this.pathUrl}${id}`)
+        // return $axios.$get(`${resource}/${id}`)
     },
 
     create(payload) {
-        return $axios.$post(`${resource}`, payload)
+        return $axios.$get(`${this.pathUrl}`, payload)
+        // return $axios.$post(`${resource}`, payload)
     },
 
     update(id, payload) {

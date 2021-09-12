@@ -1,5 +1,5 @@
 <template>
-      <ul class="w-full steps">
+  <ul class="w-full steps mt-6 mb-6">
   <li class="step step-primary">Join</li> 
   <li class="step step-primary">Create</li> 
   <li class="step">Share</li> 

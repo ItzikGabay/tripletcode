@@ -1,5 +1,15 @@
 export const state = () => ({
-    list: []
+    list: [],
+    currentSnippet: {
+        title: '',
+        date_created: '',
+        author: '',
+        code: '',
+        public: '',
+        views: '',
+        id: ''
+    },
+    currentView: {}
 })
 
 export const actions = {
@@ -21,12 +31,27 @@ export const actions = {
                 commit("add", res.data)
             })
     },
+    // getSnippetById: async ({ commit }, data) => {
+    //     await $axios.get(`http://localhost:4001/${data}`)
+    //         .then((res) => {
+    //             // commit("add", res.data)
+    //             console.log(res);
+    //         })
+    // },
 }
 
 export const mutations = {
     // pushAll: ((state, data) => state.list = data),
     pushAll(state, data) {
         state.list = data
+    },
+
+    setCurrentSnippetState(state, data) {
+        state.currentSnippet = data
+    },
+
+    setCurrentViewState(state, data) {
+        state.currentView = data
     },
 
     add(state, snippet) {

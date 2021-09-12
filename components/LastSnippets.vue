@@ -30,7 +30,9 @@
             </div> 
             <div>
               <div class="font-bold">
-                    {{snippet.snippet_info.title}}
+                    <!-- <NuxtLink :to="{path: snippet.id}">{{snippet.snippet_info.title}}</NuxtLink> -->
+                    <!-- <nuxt-link :to="{ name: snippet.id }">User</nuxt-link> -->
+                    <nuxt-link :to="`/${snippet._id}`">{{snippet.snippet_info.title}}</nuxt-link>
                   </div> 
               <div class="text-sm opacity-50">
                     {{snippet.snippet_info.owner_id}}
@@ -60,7 +62,7 @@ export default {
 computed: {
     latestSnippets() {
       return this.$store.state.list
-  }
+  },
 }
 }
 </script>
