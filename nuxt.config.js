@@ -19,7 +19,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~plugins/codeMirror.js'
+    '~plugins/codeMirror.js',
+    '~/plugins/axios.model.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -42,7 +43,9 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:4001/'
+  },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {

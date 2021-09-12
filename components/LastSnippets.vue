@@ -59,7 +59,6 @@
 export default {
 computed: {
     latestSnippets() {
-      console.log(this.$store.state.list);
       return this.$store.state.list
   }
 }

@@ -14,7 +14,13 @@ export const actions = {
             })
         // commit("pushAll", data)
         // return data
-    }
+    },
+    addNewSnippet: async ({ commit }, data) => {
+        await $axios.get('http://localhost:4001/')
+            .then((res) => {
+                commit("add", res.data)
+            })
+    },
 }
 
 export const mutations = {
@@ -23,11 +29,8 @@ export const mutations = {
         state.list = data
     },
 
-    add(state, text) {
-        state.list.push({
-            text,
-            done: false
-        })
+    add(state, snippet) {
+        state.list.unshift(snippet)
     },
     remove(state, { todo }) {
         state.list.splice(state.list.indexOf(todo), 1)
