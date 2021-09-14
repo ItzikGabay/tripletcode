@@ -33,13 +33,10 @@
 import daisyui from "daisyui";
 import { PrismEditor } from "vue-prism-editor";
 import "vue-prism-editor/dist/prismeditor.min.css";
-
-// import highlighting library (you can use any library you want just return html string)
 import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
-import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
-
+import "prismjs/themes/prism-tomorrow.css"; 
 import { mapActions, mapState, mapMutations } from "vuex";
 import axios from 'axios';
 
@@ -53,18 +50,13 @@ export default {
     code: 'console.log("Hello World")\n\n\n\n\n\n\n',
   }),
   computed: {
-    // ...mapActions("root",["getLatestSnippets"]),
     latestSnippets() {
       return this.$store.state.list;
     },
   },
-  // async asyncData(ctx) {
-  //   // debugger;
-  //   let result = await ctx.app.$axiosController.index();
-  // },
   methods: {
     highlighter(code) {
-      return highlight(code, languages.js); //returns html
+      return highlight(code, languages.js);
     },
     retriveSnippetsList() {
       axios.get('http://localhost:4001')
@@ -72,10 +64,8 @@ export default {
         let result = response.data
         this.$store.commit("pushAll", result)
       })
-      // this.$store.dispatch("getSnippetById", "613ce161c25c8c09510e7350");
     },
     async alert() {
-      // this.$store.dispatch("addNewSnippet")
       let object = {
         snippet_data: this.code,
         snippet_settings: {
@@ -97,9 +87,8 @@ export default {
       })
       .then(res => {
         this.$store.commit("add", res.data);
+        this.$nuxt.$router.push(`${res.data._id}`)
       })
-      
-      // const result = await this.$axiosController.create(object);
     },
   },
   created() {

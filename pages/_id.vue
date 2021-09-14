@@ -1,33 +1,30 @@
 <template>
   <div>
+    <!-- # HEADER # -->
+    <!-- Steps Component -->
     <Steps />
-    <SnippetCard />
+    <!-- END Steps Component -->
 
-    <div id="card">
-      <div id="title">
-        <p>{{getSnippetData.title}}</p>
-        <p>{{test}}</p>
-      </div>
-      <div id="owner">
-        <p>{{getSnippetData.author}}</p>
-      </div>
-      <div id="created_at">
-        <p>{{getSnippetData.date_created}}</p>
-      </div>
-      <div id="views">
-        <p>{{getSnippetData.views}}</p>
-      </div>
-      <div id="public-view">
-        <p>Public: {{getSnippetData.public}}</p>
-      </div>
-    </div>
-    <div class="grid place-items-center h-screen-sm mb-20 mt-6">
+    <!-- SnippetCard Component -->
+    <SnippetCard />
+    <!-- END SnippetCard Component -->
+    <!-- # END HEADER # -->
+
+    <!-- # BODY # -->
+    <!-- CodeEditor Component -->
+    <div class="grid place-items-center h-screen-sm mb-20 mt-4">
       <prism-editor
         class="my-editor shadow-2xl rounded max-w-screen-sm"
         v-model="code"
         :highlight="highlighter"
       />
+      <!-- END CodeEditor Component -->
+
+      <!-- Share Component -->
+      <Share />
+      <!-- END Share Component -->
     </div>
+    <!-- # END BODY # -->
   </div>
 </template>
 
@@ -35,71 +32,52 @@
 import daisyui from "daisyui";
 import { PrismEditor } from "vue-prism-editor";
 import "vue-prism-editor/dist/prismeditor.min.css";
-
-import axios from 'axios';
-
-// import highlighting library (you can use any library you want just return html string)
 import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
     PrismEditor,
   },
   data: () => ({
-    title: "Loading..",
-    code: 'Loading..',
-    currentSnippet: {}
+    code: "Loading..",
   }),
   computed: {
-    setSnippetData() {
-      let result = {
-        title: this.$store.state.currentView.snippet_info?.title,
-        date_created: this.$store.state.currentView.snippet_info?.date_created,
-        author: this.$store.state.currentView.snippet_info?.owner_id,
-        code: this.$store.state.currentView.snippet_data,
-        public: this.$store.state.currentView.snippet_settings?.public_view,
-        views: this.$store.state.currentView?.views,
-        id: this.$store.state.currentView?._id,
-      }
-      this.$store.commit("setCurrentSnippetState", result)
-      return result;
-    },
-    getSnippetData() {
-      return this.$store.state.currentSnippet;
-    },
-    test() {
-      return this.$store.state.currentView;
-    }
+    ...mapGetters("snippets", ["getCurrent"]),
   },
   methods: {
+    ...mapActions("snippets", ["getSnippet"]),
+    /**
+     * Code editor module function.
+     */
     highlighter(code) {
       return highlight(code, languages.js);
     },
-    async getData() {
-      let snippet_id = this.$route.params.id;
-      axios.get(`http://localhost:4001/${snippet_id}`)
-      .then(response => {
-        this.code = response.data?.snippet_data;
-        this.title = response.data?.snippet_data?.title;
-        this.currentSnippet = response.data
-        debugger;
-        this.$store.commit("setCurrentViewState", response.data)
-        return response.data
-      })
-    }
   },
   async created() {
-    await this.getData()
-    // this.currentSnippet = response.data
-    // this.$store.commit("setCurrentViewState", response.data)
-  }
+    /**
+     * Checks if the state already loaded,
+     * TRUE: load again just from the state.
+     */
+    let currentStateId = this.getCurrent.id;
+    let params = this.$route.params.id;
+    let currentStateCode = this.getCurrent.code;
+    this.code = currentStateCode;
+
+    if (!(currentStateId === params)) {
+      await this.getSnippet({ snippet_id: params });
+      this.code = this.getCurrent.code;
+    }
+  },
 };
 </script>
 
 <style>
+/* Reset basic CSS configuration */
+/* ########## */
 body,
 h1,
 h2,
@@ -109,7 +87,11 @@ h5 {
   padding: 0;
   margin: 0;
 }
+/* ########## */
+/* END Reset basic CSS configuration */
 
+/* Editor Styling */
+/* ########## */
 .my-editor {
   background: #2d2d2d;
   color: #ccc;
@@ -123,4 +105,6 @@ h5 {
 .prism-editor__textarea:focus {
   outline: none;
 }
+/* ########## */
+/* END Editor Styling */
 </style>
