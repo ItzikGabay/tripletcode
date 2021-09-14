@@ -1,4 +1,7 @@
+import axios from 'axios';
+
 export const state = () => ({
+    namespaced: true,
     list: [],
     currentSnippet: {
         title: '',
@@ -31,6 +34,12 @@ export const actions = {
                 commit("add", res.data)
             })
     },
+    getSnippet: async ({ commit }, options) => {
+        return await axios.get(`http://localhost:4001/${options.snippet_id}`)
+            .then(res => {
+            console.log(res.data);
+        })
+    }
     // getSnippetById: async ({ commit }, data) => {
     //     await $axios.get(`http://localhost:4001/${data}`)
     //         .then((res) => {
