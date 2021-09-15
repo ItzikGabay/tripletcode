@@ -8,7 +8,7 @@ export const state = () => ({
 
 export const actions = {
     getSnippet: async ({ commit }, options) => {
-        await axios.get(`http://localhost:4001/${options.snippet_id}`)
+    await axios.get(`https://triplet-code.herokuapp.com/${options.snippet_id}`)
         .then(res => {
             commit("setState", { statePath: 'current', data: res.data})
         });

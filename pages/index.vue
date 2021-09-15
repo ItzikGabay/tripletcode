@@ -36,7 +36,7 @@ import "vue-prism-editor/dist/prismeditor.min.css";
 import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
-import "prismjs/themes/prism-tomorrow.css"; 
+import "prismjs/themes/prism-tomorrow.css";
 import { mapActions, mapState, mapMutations } from "vuex";
 import axios from 'axios';
 
@@ -59,7 +59,7 @@ export default {
       return highlight(code, languages.js);
     },
     retriveSnippetsList() {
-      axios.get('http://localhost:4001')
+      axios.get('https://triplet-code.herokuapp.com/')
       .then(response => {
         let result = response.data
         this.$store.commit("pushAll", result)
@@ -80,7 +80,7 @@ export default {
           },
         };
       }
-      await axios.post('http://localhost:4001/', object, {
+      await axios.post('https://triplet-code.herokuapp.com/', object, {
       headers: {
       'Content-Type': 'application/json'
       }
