@@ -1,3 +1,6 @@
+const baseDir = process.env.BASE_DIR || '/';
+const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -11,6 +14,14 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
+  },
+
+  // Private Settings by @itzikdevio
+  env: {
+    baseUrl: baseUrl,
+  },
+  router: {
+    base: baseDir,
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

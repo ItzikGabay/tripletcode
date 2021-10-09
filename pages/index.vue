@@ -9,7 +9,7 @@
       <input
         type="text"
         name="snippet_name"
-        placeholder="Snippet Name"
+        placeholder="Your snippet name"
         v-model="title"
         class="input input-primary input-bordered mb-6"
       />
@@ -23,13 +23,10 @@
       <button class="btn btn-primary mt-6 mb-4" @click="userSnippetCreate()">
         Share Now
       </button>
-      <button class="btn btn-primary mt-6 mb-4" @click="test()">
-        Test
-      </button>
     </div>
     <Stats />
     <div class="grid place-items-center mt-12 mb-12">
-      <LastSnippets />
+      <LastSnippets title="5 Most viewed snippets latley" />
     </div>
   </div>
 </template>

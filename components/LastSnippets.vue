@@ -8,7 +8,7 @@
               <input type="checkbox" class="checkbox" />
             </label>
           </th>
-          <th>Latest Snippets</th>
+          <th>{{ this.title }}:</th>
           <th>Date Created</th>
           <th>Views</th>
           <th></th>
@@ -18,7 +18,7 @@
         <tr v-for="snippet in latestSnippets" :key="snippet.id">
           <th>
             <label>
-              <input type="checkbox" class="checkbox" />
+              <input type="checkbox" class="checkbox checkbox-primary" />
             </label>
           </th>
           <td>
@@ -49,14 +49,14 @@
             {{ snippet.snippet_info.date_created }}
 
             <br />
-            <span class="badge badge-outline badge-sm"
-              >Desktop Support Technician</span
+            <span class="badge badge-outline badge-sm link link-hover"
+              >Type: Snippet</span
             >
           </td>
-          <td>{{ snippet.views }}</td>
+          <td class="link link-hover">{{ snippet.views }}</td>
           <th>
             <nuxt-link :to="`/${snippet._id}`"
-              ><button class="btn btn-ghost btn-xs">View</button></nuxt-link
+              ><button class="btn btn-primary btn-xs">View</button></nuxt-link
             >
           </th>
         </tr>
@@ -67,6 +67,7 @@
 
 <script>
 export default {
+  props: ["title"],
   computed: {
     latestSnippets() {
       return this.$store.state.list;
