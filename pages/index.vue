@@ -3,23 +3,28 @@
     <!-- <Message/> -->
     <Steps />
     <div class="grid place-items-center h-screen-sm">
-      <p class="font-extrabold text-5xl mb-6 mt-4">
-        Create your TripletCode Now:
+      <p class="font-extrabold md:text-5xl text-4xl mb-6 mt-4">
+        Create your first <i>TripletCode</i> Now:
       </p>
       <input
         type="text"
+        name="snippet_name"
         placeholder="Snippet Name"
         v-model="title"
         class="input input-primary input-bordered mb-6"
       />
-      <prism-editor
-        class="my-editor shadow-2xl rounded max-w-screen-sm"
+      <!-- <prism-editor
+        class="my-editor shadow-2xl rounded md:max-w-screen-sm max-w-sm"
         v-model="code"
         :highlight="highlighter"
-      />
-      <ShareOption class="mt-6" />
-      <button class="btn btn-primary mt-6 mb-4" @click="alert">
-        Share Code
+      /> -->
+      <CodeEditor />
+      <ShareOption class="mt-6" @change="changeSnippetView" />
+      <button class="btn btn-primary mt-6 mb-4" @click="userSnippetCreate()">
+        Share Now
+      </button>
+      <button class="btn btn-primary mt-6 mb-4" @click="test()">
+        Test
       </button>
     </div>
     <Stats />
@@ -30,70 +35,92 @@
 </template>
 
 <script>
-import daisyui from "daisyui";
+// import "vue-prism-editor/dist/prismeditor.min.css";
+import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 import { PrismEditor } from "vue-prism-editor";
 import "vue-prism-editor/dist/prismeditor.min.css";
 import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css";
-import { mapActions, mapState, mapMutations } from "vuex";
-import axios from 'axios';
+import "prismjs";
 
 export default {
-  name: 'index',
+  name: "Home",
   components: {
-    PrismEditor,
+    PrismEditor
   },
   data: () => ({
+    // Snippet title & Snippet code
     title: "",
     code: 'console.log("Hello World")\n\n\n\n\n\n\n',
+    public: true
   }),
   computed: {
+    // ADD: should to be only the last 5,
     latestSnippets() {
       return this.$store.state.list;
-    },
+    }
   },
   methods: {
+    // code editor module default function
     highlighter(code) {
       return highlight(code, languages.js);
     },
-    retriveSnippetsList() {
-      axios.get('https://triplet-code.herokuapp.com/')
-      .then(response => {
-        let result = response.data
-        this.$store.commit("pushAll", result)
-      })
+    // fetch data and save it on state
+    fetchData() {
+      this.$axios.get("http://localhost:5000/").then(response => {
+        this.$store.commit("pushAll", response.data);
+      });
     },
-    async alert() {
-      let object = {
+    // When the user click on "Share" button
+    async userSnippetCreate() {
+      // SNIPPET Schema
+      let snippetSchema = {
         snippet_data: this.code,
         snippet_settings: {
-          public_view: true,
-        },
+          public_view: this.public
+        }
       };
-      if (this.title !== "") {
-        object = {
-          ...object,
-          snippet_info: {
-            title: this.title,
-          },
+
+      // Title input validation,
+      // with backend validation aswell (default: uuid for null)
+      const snippetInputTitle = this.title;
+      if (snippetInputTitle !== "") {
+        snippetSchema.snippet_info = {
+          title: snippetInputTitle
         };
       }
-      await axios.post('https://triplet-code.herokuapp.com/', object, {
-      headers: {
-      'Content-Type': 'application/json'
-      }
-      })
-      .then(res => {
-        this.$store.commit("add", res.data);
-        this.$nuxt.$router.push(`${res.data._id}`)
-      })
+
+      // Send the data &
+      // Store in state &
+      // Redirect to snippet_id view
+      await this.$axios
+        .post("http://localhost:5000/", snippetSchema, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(res => {
+          this.$store.commit("add", res.data);
+          this.$nuxt.$router.push(`${res.data._id}`);
+        });
     },
+    changeSnippetView(value) {
+      if (value === "Public") {
+        this.public = true;
+      }
+      if (value === "Private") {
+        this.public = false;
+      }
+      // console.log(this.$refs);
+    }
   },
   created() {
-    this.retriveSnippetsList();
-  },
+    // Whenever created, fetch data
+    // and store in state.
+    this.fetchData();
+  }
 };
 </script>
 

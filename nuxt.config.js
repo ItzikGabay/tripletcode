@@ -50,7 +50,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // baseURL: 'http://localhost:4001/'
-    baseURL: 'https://triplet-code.herokuapp.com/'
+    baseURL: 'http://localhost:5000/'
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -62,6 +62,13 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    babel: {
+      plugins: [
+        ["@babel/plugin-proposal-class-properties", { "loose": true }],
+        ["@babel/plugin-proposal-private-methods", { "loose": true }],
+        ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
+      ]
+    },
     hotMiddleware: {
       client: {
         overlay: false

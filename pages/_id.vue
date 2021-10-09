@@ -1,16 +1,7 @@
 <template>
   <div>
-    <!-- # HEADER # -->
-    <!-- Steps Component -->
     <Steps />
-    <!-- END Steps Component -->
-
-    <!-- SnippetCard Component -->
     <SnippetCard />
-    <!-- END SnippetCard Component -->
-    <!-- # END HEADER # -->
-
-    <!-- # BODY # -->
     <!-- CodeEditor Component -->
     <div class="grid place-items-center h-screen-sm mb-20 mt-4">
       <prism-editor
@@ -19,12 +10,8 @@
         :highlight="highlighter"
       />
       <!-- END CodeEditor Component -->
-
-      <!-- Share Component -->
       <Share />
-      <!-- END Share Component -->
     </div>
-    <!-- # END BODY # -->
   </div>
 </template>
 
@@ -40,27 +27,26 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
-    PrismEditor,
+    PrismEditor
   },
   data: () => ({
-    code: "Loading..",
+    code: "Loading.."
   }),
   computed: {
-    ...mapGetters("snippets", ["getCurrent"]),
+    ...mapGetters("snippets", ["getCurrent"])
   },
   methods: {
     ...mapActions("snippets", ["getSnippet"]),
-    /**
-     * Code editor module function.
-     */
+    // Editor import default function for highlighting
     highlighter(code) {
       return highlight(code, languages.js);
-    },
+    }
   },
   async created() {
     /**
      * Checks if the state already loaded,
-     * TRUE: load again just from the state.
+     * IF TRUE: load again from the state.
+     * IF FALSE: make DB request and push to state.
      */
     let currentStateId = this.getCurrent.id;
     let params = this.$route.params.id;
@@ -71,7 +57,7 @@ export default {
       await this.getSnippet({ snippet_id: params });
       this.code = this.getCurrent.code;
     }
-  },
+  }
 };
 </script>
 
