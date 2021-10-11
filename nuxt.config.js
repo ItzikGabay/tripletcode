@@ -1,5 +1,5 @@
 const baseDir = process.env.BASE_DIR || '/';
-const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head

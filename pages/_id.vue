@@ -9,6 +9,7 @@
         v-model="code"
         :highlight="highlighter"
       />
+      <!-- <CodeEditor /> -->
       <!-- END CodeEditor Component -->
       <Share />
     </div>
@@ -30,16 +31,21 @@ export default {
     PrismEditor
   },
   data: () => ({
+    // loading state
     code: "Loading.."
   }),
   computed: {
-    ...mapGetters("snippets", ["getCurrent"])
+    ...mapGetters("snippets", ["getComponentData"])
   },
   methods: {
-    ...mapActions("snippets", ["getSnippet"]),
-    // Editor import default function for highlighting
+    ...mapActions("snippets", ["fetchSnippetById"]),
+
     highlighter(code) {
       return highlight(code, languages.js);
+    },
+    changeInput(e) {
+      // console.log(e);
+      // this.code =
     }
   },
   async created() {
@@ -48,15 +54,21 @@ export default {
      * IF TRUE: load again from the state.
      * IF FALSE: make DB request and push to state.
      */
-    let currentStateId = this.getCurrent.id;
+
+    let currentStateId = this.getComponentData.id;
     let params = this.$route.params.id;
-    let currentStateCode = this.getCurrent.code;
+    let currentStateCode = this.getComponentData.code;
     this.code = currentStateCode;
 
-    if (!(currentStateId === params)) {
-      await this.getSnippet({ snippet_id: params });
-      this.code = this.getCurrent.code;
-    }
+    // if (!(currentStateId === params)) {
+    await this.fetchSnippetById({ snippet_id: params });
+    this.code = this.getComponentData.code;
+    // }
+
+    // this.$axios.get(`http://localhost:5000/${params}`).then(res => {
+    //   console.log(res);
+    //   this.code = res.data.snippet_data;
+    // });
   }
 };
 </script>

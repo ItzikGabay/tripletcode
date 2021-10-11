@@ -1,9 +1,8 @@
 <template>
   <prism-editor
     class="my-editor shadow-2xl rounded md:max-w-screen-sm max-w-sm"
-    v-model="code"
+    v-model="this.code"
     :highlight="highlighter"
-    ref="test"
   />
 </template>
 
@@ -19,70 +18,29 @@ import "prismjs/themes/prism-tomorrow.css";
 import "prismjs";
 
 export default {
-  name: "Home",
+  name: "",
+  // props: ["codeData"],
   components: {
     PrismEditor
   },
   data: () => ({
     // Snippet title & Snippet code
     title: "",
-    code: 'console.log("Hello World")\n\n\n\n\n\n\n'
+    code: 'console.log("Hello World from code editor")\n\n\n\n\n\n\n'
   }),
-  computed: {
-    // ADD: should to be only the last 5,
-    latestSnippets() {
-      return this.$store.state.list;
-    }
-  },
+  computed: {},
   methods: {
     // highlights code (prism default function)
     highlighter(code) {
       return highlight(code, languages.js);
     },
-    // fetch data and save it on state
-    fetchData() {
-      this.$axios.get("http://localhost:5000/").then(response => {
-        this.$store.commit("pushAll", response.data);
-      });
-    },
-    // When the user click on "Share" button
-    async userSnippetCreate() {
-      // SNIPPET Schema
-      let snippetSchema = {
-        snippet_data: this.code,
-        snippet_settings: {
-          public_view: true
-        }
-      };
-
-      // Title input validation,
-      // with backend validation aswell (default: uuid for null)
-      const snippetInputTitle = this.title;
-      if (snippetInputTitle !== "") {
-        snippetSchema.snippet_info = {
-          title: snippetInputTitle
-        };
-      }
-
-      // Send the data &
-      // Store in state &
-      // Redirect to snippet_id view
-      await this.$axios
-        .post("http://localhost:5000/", snippetSchema, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-        .then(res => {
-          this.$store.commit("add", res.data);
-          this.$nuxt.$router.push(`${res.data._id}`);
-        });
-    },
-    test() {
-      console.log(this.$refs);
+    onInputChange(event) {
+      // this.$emit("inputChanged", this.code);
+      // this.$emit("change", this.code);
     }
   },
   created() {
+    // this.code = this.codeData;
     // Whenever created, fetch data
     // and store in state.
     // this.fetchData();

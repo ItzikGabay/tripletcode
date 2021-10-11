@@ -3,34 +3,41 @@
     <div class="grid place-items-center mt-12 mb-12">
       <h1 class="text-2xl sm:text-3xl font-mono">Last 50 snippets by date:</h1>
       <div class="divider"></div>
-      <LastSnippets title="Last 50 snippets" />
+      <button>Sort by date</button>
+      <button @click="this.highestSortButton">Sort by score</button>
+      <LastSnippets
+        title="Last 50 snippets"
+        :snippetsData="this.getSnippetsList"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   computed: {
-    latestSnippets() {
-      return this.$store.state.list;
+    ...mapGetters("snippets", ["getSnippetsList"]),
+    sortByHighest() {
+      let result = [...this.getSnippetsList];
+      result.sort(function(a, b) {
+        return a.views - b.views;
+      });
+      return result;
     }
   },
   methods: {
-    // code editor module default function
+    ...mapActions("snippets", ["fetchExploreSnippets"]),
+    // code editor default function
     highlighter(code) {
       return highlight(code, languages.js);
     },
-    // fetch data and save it on state
-    fetchData() {
-      this.$axios.get("http://localhost:5000/explore").then(response => {
-        this.$store.commit("pushAll", response.data);
-      });
-    }
+    highestSortButton() {}
   },
   created() {
-    // Whenever created, fetch data
-    // and store in state.
-    this.fetchData();
+    // On created, fetch data and store in state.
+    this.fetchExploreSnippets();
   }
 };
 </script>

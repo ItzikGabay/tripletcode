@@ -13,12 +13,12 @@
         v-model="title"
         class="input input-primary input-bordered mb-6"
       />
-      <!-- <prism-editor
+      <prism-editor
         class="my-editor shadow-2xl rounded md:max-w-screen-sm max-w-sm"
         v-model="code"
         :highlight="highlighter"
-      /> -->
-      <CodeEditor />
+      />
+      <!-- <CodeEditor :codeData="this.code"/> -->
       <ShareOption class="mt-6" @change="changeSnippetView" />
       <button class="btn btn-primary mt-6 mb-4" @click="userSnippetCreate()">
         Share Now
@@ -26,7 +26,10 @@
     </div>
     <Stats />
     <div class="grid place-items-center mt-12 mb-12">
-      <LastSnippets title="5 Most viewed snippets latley" />
+      <LastSnippets
+        title="5 Most viewed snippets latley"
+        :snippetsData="this.getTopSnippets"
+      />
     </div>
   </div>
 </template>
@@ -41,6 +44,8 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css";
 import "prismjs";
+import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Home",
@@ -54,54 +59,38 @@ export default {
     public: true
   }),
   computed: {
-    // ADD: should to be only the last 5,
-    latestSnippets() {
-      return this.$store.state.list;
-    }
+    ...mapGetters("snippets", [
+      "getTopSnippets",
+      "getComponentData",
+      "getCurrentSnippet"
+    ])
   },
   methods: {
-    // code editor module default function
+    ...mapActions("snippets", ["fetchTopSnippets", "fetchSnippetPOST"]),
+
     highlighter(code) {
       return highlight(code, languages.js);
     },
-    // fetch data and save it on state
-    fetchData() {
-      this.$axios.get("http://localhost:5000/").then(response => {
-        this.$store.commit("pushAll", response.data);
+    requestAddSnippet(snippetSchema) {
+      this.fetchSnippetPOST({ snippetSchema }).then(res => {
+        this.$nuxt.$router.push(this.getComponentData.id);
+        this.$store.commit("add", this.getCurrentSnippet);
       });
     },
     // When the user click on "Share" button
     async userSnippetCreate() {
-      // SNIPPET Schema
+      // title
+      const snippetInputTitle = this.title || "RandomSnippet";
+      // rest of schema
       let snippetSchema = {
         snippet_data: this.code,
         snippet_settings: {
           public_view: this.public
-        }
+        },
+        snippet_info: { title: snippetInputTitle }
       };
 
-      // Title input validation,
-      // with backend validation aswell (default: uuid for null)
-      const snippetInputTitle = this.title;
-      if (snippetInputTitle !== "") {
-        snippetSchema.snippet_info = {
-          title: snippetInputTitle
-        };
-      }
-
-      // Send the data &
-      // Store in state &
-      // Redirect to snippet_id view
-      await this.$axios
-        .post("http://localhost:5000/", snippetSchema, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-        .then(res => {
-          this.$store.commit("add", res.data);
-          this.$nuxt.$router.push(`${res.data._id}`);
-        });
+      this.requestAddSnippet(snippetSchema);
     },
     changeSnippetView(value) {
       if (value === "Public") {
@@ -110,13 +99,13 @@ export default {
       if (value === "Private") {
         this.public = false;
       }
-      // console.log(this.$refs);
+    },
+    updateCodeData(v) {
+      console.log(v);
     }
   },
   created() {
-    // Whenever created, fetch data
-    // and store in state.
-    this.fetchData();
+    this.fetchTopSnippets();
   }
 };
 </script>

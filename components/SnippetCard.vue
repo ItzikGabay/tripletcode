@@ -4,16 +4,16 @@
   >
     <div>
       <h2 class="card-title font-extralight text-purple-500">
-        {{ getCurrent.title }}
+        {{ getComponentData.title }}
       </h2>
       <p class="text-2xl"><b>Author:</b></p>
-      <p class="font-extralight">{{ getCurrent.author }}</p>
+      <p class="font-extralight">{{ getComponentData.author }}</p>
 
       <p class="text-2xl"><b>Date created:</b></p>
-      <p class="font-extralight">{{ getCurrent.date_created }}</p>
+      <p class="font-extralight">{{ getComponentData.date_created }}</p>
 
       <p class="text-2xl"><b>Public:</b></p>
-      <p class="font-extralight">{{ getCurrent.public }}</p>
+      <p class="font-extralight">{{ getComponentData.public }}</p>
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ import { mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters("snippets", ["getCurrent"])
+    ...mapGetters("snippets", ["getComponentData"])
   }
 };
 </script>

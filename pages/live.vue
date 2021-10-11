@@ -56,7 +56,7 @@ export default {
     ...mapGetters("snippets", ["getCurrent"])
   },
   methods: {
-    ...mapActions("snippets", ["getSnippet"]),
+    ...mapActions("snippets", ["fetchSnippetById"]),
     /**
      * Code editor module function.
      */
@@ -94,7 +94,9 @@ export default {
         idxOfDuplicatedString + 1,
         data.message.length - 1
       );
-      return `// last updated: ${this.senderId} - ${time}\n${result}\n`;
+      return `${data.message}`;
+      // return `// last updated: ${this.senderId} - ${time}\n${result}\n`;
+      // return `// last updated: ${this.senderId} - ${time}\n${result}\n`;
     },
     createPusherConnection() {
       var pusher = new Pusher("27c1635cedaefecbfb7c", {

@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="snippet in latestSnippets" :key="snippet.id">
+        <tr v-for="snippet in this.snippetsData" :key="snippet.id">
           <th>
             <label>
               <input type="checkbox" class="checkbox checkbox-primary" />
@@ -67,12 +67,7 @@
 
 <script>
 export default {
-  props: ["title"],
-  computed: {
-    latestSnippets() {
-      return this.$store.state.list;
-    }
-  }
+  props: ["title", "snippetsData"]
 };
 </script>
 
