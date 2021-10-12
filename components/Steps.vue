@@ -20,6 +20,11 @@ export default {
     if (this.$route.path === "/") {
       this.step1 = true;
     }
+    if (this.$route.path === "/live") {
+      this.step1 = true;
+      this.step2 = true;
+      this.step3 = true;
+    }
     if (this.$route.params.id) {
       this.step2 = true;
     }

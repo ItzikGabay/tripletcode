@@ -1,6 +1,3 @@
-const baseDir = process.env.BASE_DIR || '/';
-const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
-
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -18,10 +15,10 @@ export default {
 
   // Private Settings by @itzikdevio
   env: {
-    baseUrl: baseUrl,
+    baseUrl: process.env.BASE_URL || 'https://triplet-code.herokuapp.com/',
   },
   router: {
-    base: baseDir,
+    base: process.env.BASE_DIR || '/',
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

@@ -18,7 +18,7 @@ export const state = () => ({
 export const actions = {
   getLatestSnippets: async ({ commit }, data) => {
     // let result = await fetch('https://triplet-code.herokuapp.com/')
-    await fetch('http://localhost:5000/')
+    await fetch(`${process.env.baseUrl}`)
       .then((res) => {
         let result = res.json()
         result.then((resArray) => {
@@ -30,14 +30,14 @@ export const actions = {
   },
   addNewSnippet: async ({ commit }, data) => {
     // await $axios.get('https://triplet-code.herokuapp.com/')
-    await $axios.get('http://localhost:5000/')
+    await $axios.get(`${process.env.baseUrl}`)
       .then((res) => {
         commit("add", res.data)
       })
   },
   getSnippet: async ({ commit }, options) => {
     // return await axios.get(`https://triplet-code.herokuapp.com/${options.snippet_id}`)
-    return await axios.get(`http://localhost:5000/${options.snippet_id}`)
+    return await axios.get(`${process.env.baseUrl}${options.snippet_id}`)
       .then(res => {
         console.log(res.data);
       })

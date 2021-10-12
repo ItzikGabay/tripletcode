@@ -17,7 +17,7 @@ export const actions = {
   *  @param {String} snippet_id snippet to fetch.
   **/
   fetchSnippetById: async ({ commit }, options) => {
-    await axios.get(`http://localhost:5000/${options.snippet_id}`)
+    await axios.get(`${process.env.baseUrl}${options.snippet_id}`)
       .then(res => {
         commit("setState", { statePath: 'current', data: res.data })
       });
@@ -27,7 +27,7 @@ export const actions = {
   *  @desc getting top score by last date snippets
   **/
   fetchTopSnippets: async ({ commit }, options) => {
-    await axios.get(`http://localhost:5000/`)
+    await axios.get(process.env.baseUrl)
       .then(res => {
         commit("setState", { statePath: 'public_latest', data: res.data })
       });
@@ -37,7 +37,7 @@ export const actions = {
   *  @desc get snippets for /explore route
   **/
   fetchExploreSnippets: async ({ commit }, options) => {
-    await axios.get(`http://localhost:5000/explore`)
+    await axios.get(`${process.env.baseUrl}explore`)
       .then(res => {
         commit("setState", { statePath: 'list', data: res.data })
       });
@@ -48,7 +48,7 @@ export const actions = {
   *  @param {Object} snippetSchema snippet object to send to backend
   **/
   fetchSnippetPOST: async ({ commit }, options) => {
-    await axios.post(`http://localhost:5000/`, options.snippetSchema)
+    await axios.post(`${process.env.baseUrl}`, options.snippetSchema)
       .then(res => {
         commit("setState", { statePath: 'current', data: res.data })
       });

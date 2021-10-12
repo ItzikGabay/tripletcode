@@ -1,14 +1,22 @@
 <template>
   <div>
     <div class="grid place-items-center mt-12 mb-12">
-      <h1 class="text-2xl sm:text-3xl font-mono">Last 50 snippets by date:</h1>
-      <div class="divider"></div>
-      <button>Sort by date</button>
-      <button @click="this.highestSortButton">Sort by score</button>
-      <LastSnippets
-        title="Last 50 snippets"
-        :snippetsData="this.getSnippetsList"
-      />
+      <h1 class="text-2xl sm:text-3xl font-mono mb-8">
+        Last 50 snippets by date:
+      </h1>
+      <!-- <div class="divider"></div> -->
+      <div class="sortBy mb-6">
+        <button class="btn btn-wide btn-sm" @click="this.sortByDefault">
+          Sort by date
+        </button>
+        <button
+          class="btn btn-wide btn-sm btn-outline"
+          @click="this.highestSortButton"
+        >
+          Sort by views 
+        </button>
+      </div>
+      <LastSnippets title="Last 50 snippets" :snippetsData="this.list" />
     </div>
   </div>
 </template>
@@ -17,12 +25,17 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  data() {
+    return {
+      list: []
+    };
+  },
   computed: {
     ...mapGetters("snippets", ["getSnippetsList"]),
     sortByHighest() {
       let result = [...this.getSnippetsList];
       result.sort(function(a, b) {
-        return a.views - b.views;
+        return b.views - a.views;
       });
       return result;
     }
@@ -33,11 +46,25 @@ export default {
     highlighter(code) {
       return highlight(code, languages.js);
     },
-    highestSortButton() {}
+    highestSortButton() {
+      this.list = this.sortByHighest;
+    },
+    sortByDefault() {
+      this.list = this.getSnippetsList;
+    }
   },
-  created() {
+  async created() {
     // On created, fetch data and store in state.
-    this.fetchExploreSnippets();
+    await this.fetchExploreSnippets();
+    this.list = this.getSnippetsList;
+
+    /**
+     *  NEW FIX:
+     *
+     * 1. fetch the data and load to store
+     * 2. update this.code to show user
+     * 3.
+     **/
   }
 };
 </script>

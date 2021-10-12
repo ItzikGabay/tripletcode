@@ -11,12 +11,15 @@
     </div>
     <div class="flex-none hidden px-2 mx-2 lg:flex">
       <div class="flex items-stretch">
+        <NuxtLink class="btn btn-ghost btn-sm rounded-btn" to="/"
+          >Share</NuxtLink
+        >
+        <NuxtLink class="btn btn-primary btn-sm rounded-btn" to="/live"
+          >Start Session</NuxtLink
+        >
         <NuxtLink class="btn btn-ghost btn-sm rounded-btn" to="/explore"
           >Explore</NuxtLink
         >
-        <a class="btn btn-ghost btn-sm rounded-btn">
-          Favorites
-        </a>
       </div>
     </div>
     <div class="flex-none">
