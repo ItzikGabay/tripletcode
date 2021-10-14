@@ -8,10 +8,9 @@
         class="select select-bordered select-primary"
         @change="onChangeView()"
       >
-        <option disabled="disabled">Choose your Option</option>
         <option selected="selected">Snippet</option>
         <option>Live</option>
-        <option>Picture</option>
+        <option disabled="disabled">Picture (Soon!)</option>
       </select>
       <label class="label">on</label>
       <select

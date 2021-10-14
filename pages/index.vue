@@ -80,7 +80,8 @@ export default {
     // When the user click on "Share" button
     async userSnippetCreate() {
       // title
-      const snippetInputTitle = this.title || "RandomSnippet";
+      // const snippetInputTitle = this.title || "RandomSnippet";
+      const snippetInputTitle = this.title;
       // rest of schema
       let snippetSchema = {
         snippet_data: this.code,
@@ -89,6 +90,12 @@ export default {
         },
         snippet_info: { title: snippetInputTitle }
       };
+
+      // disbaling null title if null,
+      // joi(backend) validate "" as true,
+      // so we must to delete in order to get uuid4.
+      if (!snippetSchema.snippet_info.title)
+        delete snippetSchema.snippet_info.title;
 
       this.requestAddSnippet(snippetSchema);
     },

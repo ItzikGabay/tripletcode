@@ -50,7 +50,8 @@ export default {
       "// last updated: Fresh live. \n// Session started. please start type here: \n",
     messages: [],
     username: "",
-    senderId: ""
+    senderId: "",
+    query_id: ""
   }),
   computed: {
     ...mapGetters("snippets", ["getCurrent"])
@@ -63,10 +64,18 @@ export default {
     highlighter(code) {
       return highlight(code, languages.js);
     },
+    // disabled
+    // createHotLoading() {
+    //   clearTimeout(this.timer);
+    //   this.timer = setTimeout(() => {
+    //     this.codeDataFetch();
+    //   }, 2000);
+    // },
     async codeDataFetch() {
       await this.$axios.$post("http://localhost:5000/live", {
         username: this.username,
-        codeData: this.code
+        codeData: this.code,
+        query_id: this.$route.query.id
       });
     },
     onEnter: function() {
@@ -103,7 +112,7 @@ export default {
         cluster: "eu"
       });
 
-      var channel = pusher.subscribe("my-channel");
+      var channel = pusher.subscribe(this.query_id);
       return {
         pusher,
         channel
@@ -112,11 +121,17 @@ export default {
     createPusherSubscription() {
       const { pusher, channel } = this.createPusherConnection();
       channel.bind("my-event", data => {
-        this.code = this.manipulateCodeBoxInput(data);
+        if (data.id !== this.username)
+          this.code = this.manipulateCodeBoxInput(data);
       });
     }
   },
   async created() {
+    this.query_id = this.$route.query.id;
+    if (!this.query_id) {
+      this.query_id = Math.floor(100000000 + Math.random() * 900000000);
+      this.$router.push("/live?id=" + this.query_id);
+    }
     // Enable pusher logging - don't include this in production
     // Pusher.logToConsole = true;
     this.validateUserNickname();

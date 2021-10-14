@@ -54,7 +54,6 @@ export default {
      * IF TRUE: load again from the state.
      * IF FALSE: make DB request and push to state.
      */
-
     let currentStateId = this.getComponentData.id;
     let params = this.$route.params.id;
     let currentStateCode = this.getComponentData.code;
