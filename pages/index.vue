@@ -3,7 +3,7 @@
     <!-- <Message/> -->
     <Steps />
     <div class="grid place-items-center h-screen-sm">
-      <p class="font-extrabold md:text-5xl text-4xl mb-6 mt-4">
+      <p class="font-extrabold md:text-5xl text-4xl mb-6 mt-4 text-center">
         Create your first <i>TripletCode</i> Now:
       </p>
       <input
@@ -24,12 +24,14 @@
         Share Now
       </button>
     </div>
-    <Stats />
-    <div class="grid place-items-center mt-12 mb-12">
-      <LastSnippets
-        title="5 Most viewed snippets latley"
-        :snippetsData="this.getTopSnippets"
-      />
+    <div style="max-width: 0 auto;">
+      <Stats />
+      <div class="">
+        <LastSnippets
+          title="5 Most viewed snippets latley"
+          :snippetsData="this.getTopSnippets"
+        />
+      </div>
     </div>
   </div>
 </template>

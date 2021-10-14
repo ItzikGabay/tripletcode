@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-x-auto table-responsive">
+  <div class="overflow-x-auto table-responsive sm:text-lg text-xs">
     <table class="table">
       <thead>
         <tr>

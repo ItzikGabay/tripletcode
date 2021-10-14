@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full shadow stats md:text-xs text-xs">
+  <div class="w-full shadow stats">
     <div class="stat place-items-center place-content-center">
       <div class="stat-title">Public Snippets</div>
       <div class="stat-value">1,905</div>
@@ -22,4 +22,23 @@
 export default {};
 </script>
 
-<style></style>
+<style scoped>
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .stat {
+    font-size: 18px !important;
+    max-width: 100% !important;
+  }
+  .stat-title {
+    font-size: 16px !important;
+  }
+
+  .stat-value {
+    font-size: 22px !important;
+  }
+
+  .stat-desc {
+    font-size: 10px !important;
+  }
+}
+</style>
