@@ -11,7 +11,7 @@
       />
       <!-- <CodeEditor /> -->
       <!-- END CodeEditor Component -->
-      <Share />
+      <Share :codeData="this.code" />
     </div>
   </div>
 </template>
@@ -27,6 +27,7 @@ import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 import { mapActions, mapGetters } from "vuex";
 
 export default {
+  name: "explore",
   components: {
     PrismEditor
   },

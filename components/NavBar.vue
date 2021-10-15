@@ -14,7 +14,10 @@
         <NuxtLink class="btn btn-ghost btn-sm rounded-btn" to="/"
           >Share</NuxtLink
         >
-        <NuxtLink class="btn btn-primary btn-sm rounded-btn" to="/live"
+        <NuxtLink
+          class="btn btn-primary btn-sm rounded-btn"
+          v-if="this.$route.name !== 'live'"
+          to="/live"
           >Start Session</NuxtLink
         >
         <NuxtLink class="btn btn-ghost btn-sm rounded-btn" to="/explore"

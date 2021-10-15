@@ -10,7 +10,7 @@
       >
         <option selected="selected">Snippet</option>
         <option>Live</option>
-        <option disabled="disabled">Picture (Soon!)</option>
+        <option disabled="disabled">Picture (Very soon!)</option>
       </select>
       <label class="label">on</label>
       <select
@@ -43,6 +43,7 @@ export default {
       }
     },
     async onChangeView(event) {
+      this.$emit("change", this.snippetType);
       if (this.snippetType === "Live") {
         await this.$router.push("/live");
       }

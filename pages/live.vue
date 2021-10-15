@@ -25,7 +25,7 @@
         v-on:keyup.enter="onEnter"
       />
       <!-- END CodeEditor Component -->
-      <Share />
+      <Share :codeData="this.code" />
     </div>
   </div>
 </template>
@@ -86,8 +86,22 @@ export default {
       var time = today.getMinutes() + "" + today.getSeconds();
       return time;
     },
+    storeNickname(nickname) {
+      if (process.client) {
+        localStorage.setItem("LIVE_NICKNAME", nickname);
+      }
+    },
     validateUserNickname() {
-      if (!this.username) this.username = `Guest${this.createTimeByHour()}`;
+      if (process.client) {
+        let localNickname = localStorage.getItem("LIVE_NICKNAME");
+        this.username = localNickname;
+        console.log(localNickname);
+        if (!this.username || !localNickname) {
+          let newNickname = `Guest${this.createTimeByHour()}`;
+          this.storeNickname(newNickname);
+          this.username = newNickname;
+        }
+      }
     },
     getFullTimeFormat() {
       var today = new Date();
@@ -127,15 +141,20 @@ export default {
     }
   },
   async created() {
+    this.validateUserNickname();
     this.query_id = this.$route.query.id;
-    if (!this.query_id) {
+    if (!this.query_id || !Number(this.query_id)) {
       this.query_id = Math.floor(100000000 + Math.random() * 900000000);
-      this.$router.push("/live?id=" + this.query_id);
+      return this.$router.push("/live?id=" + this.query_id);
     }
     // Enable pusher logging - don't include this in production
     // Pusher.logToConsole = true;
-    this.validateUserNickname();
     this.createPusherSubscription();
+  },
+  watch: {
+    username() {
+      this.storeNickname(this.username);
+    }
   }
 };
 </script>

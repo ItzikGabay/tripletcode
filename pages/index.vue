@@ -6,6 +6,7 @@
       <p class="font-extrabold md:text-5xl text-4xl mb-6 mt-4 text-center">
         Create your first <i>TripletCode</i> Now:
       </p>
+      <!-- ref="printcontent" -->
       <input
         type="text"
         name="snippet_name"
@@ -13,22 +14,26 @@
         v-model="title"
         class="input input-primary input-bordered mb-6"
       />
+      <!-- <div ref="printcontent"> -->
       <prism-editor
         class="my-editor shadow-2xl rounded md:max-w-screen-sm max-w-sm"
         v-model="code"
         :highlight="highlighter"
       />
+
+      <!-- </div> -->
       <!-- <CodeEditor :codeData="this.code"/> -->
       <ShareOption class="mt-6" @change="changeSnippetView" />
       <button class="btn btn-primary mt-6 mb-4" @click="userSnippetCreate()">
         Share Now
       </button>
     </div>
-    <div style="max-width: 0 auto;">
-      <Stats />
-      <div class="">
+    <Stats />
+    <div class="main">
+      <div class="content">
         <LastSnippets
           title="5 Most viewed snippets latley"
+          class="mt-12 mb-10"
           :snippetsData="this.getTopSnippets"
         />
       </div>
@@ -48,6 +53,7 @@ import "prismjs/themes/prism-tomorrow.css";
 import "prismjs";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import html2canvas from "html2canvas";
 
 export default {
   name: "Home",
@@ -72,6 +78,27 @@ export default {
 
     highlighter(code) {
       return highlight(code, languages.js);
+    },
+    async printThis() {
+      console.log("printing..");
+      const el = this.$refs.printcontent;
+
+      const options = {
+        type: "dataURL"
+      };
+      const printCanvas = await html2canvas(el, options);
+      debugger;
+      const link = document.createElement("a");
+      link.setAttribute("download", "download.png");
+      link.setAttribute(
+        "href",
+        printCanvas
+          .toDataURL("image/png")
+          .replace("image/png", "image/octet-stream")
+      );
+      link.click();
+
+      console.log("done");
     },
     requestAddSnippet(snippetSchema) {
       this.fetchSnippetPOST({ snippetSchema }).then(res => {
@@ -102,11 +129,16 @@ export default {
       this.requestAddSnippet(snippetSchema);
     },
     changeSnippetView(value) {
+      console.log(value);
       if (value === "Public") {
         this.public = true;
       }
       if (value === "Private") {
         this.public = false;
+      }
+      if (value === "Picture") {
+        // console.log("s");
+        this.printThis();
       }
     },
     updateCodeData(v) {
@@ -142,5 +174,13 @@ h5 {
 
 .prism-editor__textarea:focus {
   outline: none;
+}
+
+.main {
+  display: flex;
+}
+
+.content {
+  margin: 0 auto;
 }
 </style>

@@ -19,8 +19,14 @@
         <label class="label">
           <span class="label-text">OR</span>
         </label>
-
-        <button class="btn btn-primary" @click="copyCode()">
+        <input type="text" v-model="message" style="display: none;" />
+        <button
+          class="btn btn-primary"
+          :disabled="!this.message"
+          v-clipboard:copy="message"
+          v-clipboard:success="onCopy"
+          v-clipboard:error="onError"
+        >
           Copy code to clipboard
         </button>
       </div>
@@ -30,14 +36,38 @@
 
 <script>
 export default {
+  data() {
+    return {
+      message: ""
+    };
+  },
+  props: ["codeData"],
   computed: {
     absolutePath() {
-      return `${process.env.baseUrl}${this.$router.history.base}${this.$route.path}`;
+      let query = "";
+      if (this.$route.query.id) {
+        console.log(this.$route.query.id);
+        query = `?id=${this.$route.query.id}`;
+      }
+      // console.log(
+      //   `${process.env.baseUrl}${this.$router.history.base}${this.$route.path}`
+      // );
+      return `${process.env.baseUrl.slice(0, -1)}${this.$router.history.base}${
+        this.$route.path
+      }${query}`;
     }
   },
   methods: {
-    copyCode() {
-      document.execCommand("copy");
+    onCopy: function(e) {
+      alert("You just copied: " + e.text);
+    },
+    onError: function(e) {
+      alert("Failed to copy texts");
+    }
+  },
+  watch: {
+    codeData() {
+      this.message = this.codeData.trim();
     }
   }
 };

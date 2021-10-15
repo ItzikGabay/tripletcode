@@ -44,7 +44,8 @@ export default {
     // https://go.nuxtjs.dev/eslint
     // '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    'nuxt-clipboard2'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -52,7 +53,8 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    'nuxt-clipboard2'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
