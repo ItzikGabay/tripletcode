@@ -30,7 +30,7 @@
     </div>
     <Stats />
     <div class="main">
-      <div class="content">
+      <div class="content grid">
         <LastSnippets
           title="5 Most viewed snippets latley"
           class="mt-12 mb-10"

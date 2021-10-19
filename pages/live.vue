@@ -72,7 +72,7 @@ export default {
     //   }, 2000);
     // },
     async codeDataFetch() {
-      await this.$axios.$post("http://localhost:5000/live", {
+      await this.$axios.$post("https://triplet-code.herokuapp.com/live", {
         username: this.username,
         codeData: this.code,
         query_id: this.$route.query.id

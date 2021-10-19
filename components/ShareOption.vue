@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="inline-flex">
-      <label class="label">Share as</label>
       <select
         name="snippetType"
         v-model="snippetType"

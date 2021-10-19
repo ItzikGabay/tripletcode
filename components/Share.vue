@@ -21,13 +21,22 @@
         </label>
         <input type="text" v-model="message" style="display: none;" />
         <button
+          class="btn btn-outline btn-primary mb-4"
+          v-if="this.showCopyLink"
+          v-clipboard:copy="this.absolutePath"
+          v-clipboard:success="onCopy"
+          v-clipboard:error="onError"
+        >
+          Copy LINK to clipboard
+        </button>
+        <button
           class="btn btn-primary"
           :disabled="!this.message"
           v-clipboard:copy="message"
           v-clipboard:success="onCopy"
           v-clipboard:error="onError"
         >
-          Copy code to clipboard
+          Copy CODE to clipboard
         </button>
       </div>
     </div>
@@ -38,7 +47,8 @@
 export default {
   data() {
     return {
-      message: ""
+      message: "",
+      showCopyLink: false
     };
   },
   props: ["codeData"],
@@ -46,6 +56,7 @@ export default {
     absolutePath() {
       let query = "";
       if (this.$route.query.id) {
+        this.showCopyLink = true;
         console.log(this.$route.query.id);
         query = `?id=${this.$route.query.id}`;
       }
