@@ -15,7 +15,7 @@ export default {
 
   // Private Settings by @itzikdevio
   env: {
-    baseUrl: process.env.BASE_URL || 'https://triplet-code.herokuapp.com/',
+    baseUrl: process.env.BASE_URL || 'http://triplet-code.herokuapp.com/',
   },
   router: {
     base: process.env.BASE_DIR || '/',
