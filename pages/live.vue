@@ -64,15 +64,9 @@ export default {
     highlighter(code) {
       return highlight(code, languages.js);
     },
-    // disabled
-    // createHotLoading() {
-    //   clearTimeout(this.timer);
-    //   this.timer = setTimeout(() => {
-    //     this.codeDataFetch();
-    //   }, 2000);
-    // },
     async codeDataFetch() {
-      await this.$axios.$post("https://triplet-code.herokuapp.com/live", {
+      // await this.$axios.$post("http://localhost:5000/live", {
+      await this.$axios.$post("http://triplet-code.herokuapp.com/live", {
         username: this.username,
         codeData: this.code,
         query_id: this.$route.query.id
@@ -135,6 +129,8 @@ export default {
     createPusherSubscription() {
       const { pusher, channel } = this.createPusherConnection();
       channel.bind("my-event", data => {
+        console.log(data);
+        console.log("Sender:", data.id, "Current Username:", this.username);
         if (data.id !== this.username)
           this.code = this.manipulateCodeBoxInput(data);
       });
